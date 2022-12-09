@@ -1,0 +1,106 @@
+---
+title: "project"
+output: html_document
+date: "2022-12-03"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(tidyr)
+library(ggplot2)
+library(dplyr)
+library(knitr)
+library(readxl)
+```
+
+```{r}
+ag <- read_excel("arterial_grafts.xlsx")
+```
+
+### Q4. 
+Is there an association between sex and previous myocardial infarction (heart attack)?
+
+#### Solution:
+```{r}
+# association between Sex and Previous Myocardial Infarction
+ag1 <- ag%>% filter(previousmi!= "NA", ccsanginaclass!= "NA", nyhaclass!= "NA", previouspci!= "NA", previouscardiacsurg!= "NA")
+plot1 <- ggplot(ag1, aes(x = previousmi, fill = Sex))+
+      geom_bar(width = 0.5)+
+  scale_fill_brewer(palette="Paired")+
+  ggtitle("Plot of relationship between Gender and previous myocardial infarction") +
+  xlab("Previous Myocardial Infarction (Heart Attack)") + ylab("Count")
+plot1
+```
+
+
+
+
+```{r}
+# Association between CCS angina class and NYHA Classification of Heart Failure
+plot2 <- ggplot(ag1, aes(
+                 x = ccsanginaclass,
+                 y = nyhaclass,
+                 col = Sex)) +
+      geom_point(na.rm = TRUE) +
+      geom_jitter() +
+      scale_color_manual(values=c('#ed98c8', '#859cc7'))+
+      labs(x = "CCS angina class",
+           y = "NYHA Classification of Heart Failure",
+           title = "Association between CCS angina class and NYHA Classification of Heart Failure") +
+      theme(plot.title = element_text(
+        hjust = 0.5,
+        size = 12))
+plot2
+```
+```{r}
+# Association between Smoking level to the CCS angina class and NYHA Classification of Heart Failure
+plot3 <- ggplot(ag1, aes(
+                 x = ccsanginaclass,
+                 y = nyhaclass,
+                 col = smoking)) +
+      geom_point() +
+      geom_jitter() +
+      scale_color_manual(values=c('#87CEEB', '#66CDAA','#F0E68C','#DDA0DD'))+
+      labs(x = "CCS angina class",
+           y = "NYHA Classification of Heart Failure",
+           title = "Association between Smoking level to the 
+           CCS angina class and NYHA Classification of Heart Failure") +
+      theme(plot.title = element_text(
+        hjust = 0.5,
+        size = 12))
+plot3
+```
+
+```{r}
+# Association between CCS angina class and NYHA Classification of Heart Failure
+plot4 <- ggplot(ag1, aes(
+                 x = previouspci,
+                 y = previouscardiacsurg,
+                 col = Sex)) +
+      geom_point(size = 0.1) +
+      geom_jitter() +
+      scale_color_manual(values=c('#ed98c8', '#859cc7'))+
+      labs(x = "Previous Percutaneous coronary intervention",
+           y = "Previous cardiac surgery",
+           title = " Plot of relationship of Gender in Previous Percutaneous
+        coronary intervention and Previous cardiac surgery")+
+      theme(plot.title = element_text(
+        hjust = 0.5,
+        size = 12))
+plot4
+```
+
+
+
+
+
+
+
+
+
+
+
